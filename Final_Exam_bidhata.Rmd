@@ -1,0 +1,145 @@
+---
+title: "Final_Exam_bidhata_subba"
+author: "Kartik chawla"
+date: "December 19, 2016"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+babies<-read.csv('G:/Downloads/data_babies.csv')
+smokyph<-read.csv('G:/Downloads/smokyph.csv')
+churn<-read.csv('G:/Downloads/churn.csv')
+
+```
+
+1.The Child Health and Development Studies investigate a range of topics. One study considered all
+pregnancies between 1960 and 1967 among women in the Kaiser Foundation Health Plan in the San Francisco
+East Bay area. data_babies introduces a data set on birth weight of babies. Another variable we consider is gestation, length of pregnancy in days. Is gestation a good predictor of birth weight of babies?
+
+
+```{r}
+summary(babies)
+head(babies)
+require(lattice)
+xyplot(bwt~gestation,data=babies)
+cov(babies$bwt , babies$gestation)
+cov(babies$bwt , babies$gestation)
+cor(babies$bwt , babies$gestation)
+result=cov(babies$bwt, babies$gestation)/(sd(babies$bwt)*sd(babies$gestation))
+result
+
+m1 <- lm (bwt ~ gestation , data=babies )
+summary(m1)
+## formula = o.4642*babies$gestation-10.06418
+##If the average gestation is increased by 0.4642 then the total bwt is decreased by 10
+
+```
+There is no linear regression in this scatterplot.I.e there is no direct relation between the two.
+
+2.) The babies data also include information about mothers' smoking habits. The variable smoke is coded 1
+if the mother is a smoker, and 0 if not..;
+```{r}
+plot(x= babies$bwt , y=babies$smoke)
+m2<- lm(babies$bwt ~ babies$smoke)
+m2
+summary(m2)
+
+smokewomen= 123.047 * babies$bwt -8.938
+smokewomen
+cor(babies$bwt, babies$smoke)
+plot(babies$bwt ~ babies$smoke, data=babies)
+abline(m2)
+```
+3.We considered the variables smoke and gestation, one at a time, in modeling birth weights of babies in
+Question 1 and 2. A more realistic approach to modeling infant weights is to consider all possibly related variables at once. Other variables of whether the child was 1st born (parity),0 if the child is the first born, and 1 otherwise; mother's age in years (age); mother's height in inches (height); and mother's pregnancy weight in pounds (weight).
+```{r}
+
+xyplot(bwt~smoke + gestation + parity + age + height + weight, data= babies)
+all_var <- lm ( bwt ~ smoke + gestation + parity + age + height + weight, data= babies )
+
+
+summary(all_var)
+abc <- c(2e-16,0.00327,0.91696,2.27e-08,0.04711)
+
+sort(abc)
+plot(babies$bwt ~ babies$age)
+all_var <- lm ( bwt ~ smoke + gestation + parity + height + weight, data= babies )
+
+summary (all_var)
+
+backward <- lm ( bwt ~ smoke + gestation + age +parity + height + weight, data= babies )
+summary(backward)
+```
+4.Load data set smokyph.csv . This data set measures pH levels for water samples in the Great Smoky
+Mountains. There are claims that water ph level is not acceptable in this region (we expect average ph to be 7).
+Use the waterph column (waterph) to test if the water ph level is not acceptable ( within 95% confidence level).
+```{r}
+summary(smokyph)
+head(smokyph)
+hist(smokyph$waterph)
+
+```
+5.) churn.csv is provides historical information about randomly selected 3333 customers for a phone
+service provider. Among other things, the churn variable shows whether the customer stop subscribing to the
+server (yes= he/she stopoed). Using knn, develop a model that predicts the churn variable using (at least)4 other
+variables in the dataset
+```{r}
+head(churn)
+set.seed(9850)
+normalize<-function(x){+ return((x-min(x))/(max(x)-min(x) ) )}
+n.churn<-sapply(churn[7:10],normalize)
+str(n.churn)
+new_churn<-as.data.frame(lapply(churn[,c(1,4,5,6,21)],normalize))
+
+##sampling
+ind=sample(2,nrow(data_n), rep=T, prob=c(.80, .20)) 
+train.data_n<-data_n[ind==1,] 
+test.data_n<-data_n[ind==2,]
+require('class')
+k= sqrt(nrow(train.data_n)) 
+k= round(k,0) 
+k
+predict.test<-knn( train.data_n[7:10], test.data_n[7:10],train.data_n[7:10], k=54)
+results<-data.frame(predict.test, test.churn$churn.) 
+table(results)
+ for (i in 52:55) 
+ { print(paste('For K=',i,', table is below')) 
+   predict.test<-knn( train.data_n[7:10], test.data_n[7:10],train.data_n$churn., k=i ) results<-data.frame(predict.test, test.data_n$churn) print(table(results)) }  
+```
+
+
+
+6.For the same dataset create a decision tree again using 4 variables. (At least 2 of the variables in this
+model should be different than the ones you used in the 5th question)
+```{r}
+
+summary(churn)
+n.function<- function(x){  (x-min(x))/(max(x)- min(x))}
+set.seed(9850)
+head(churn$Area.Code)
+n.area<-n.function(churn$Area.code)
+head(data.frame(churn$Area.Code,n.area))
+n.churn<-sapply(churn[17:20],n.function)
+n.churn<-data.frame(n.churn, churn$Churn.)
+set.seed(234)
+ind=sample(2,nrow(n.churn),replace=T, prob=c(0.67,.33))
+n.churn.training = n.churn[ind==1,]
+n.churn.test = n.churn[ind==2,]
+install.packages('tree')
+require('tree')
+my.model<-tree(churn.Churn.~Intl.Mins + Intl.Calls +Intl.Charge + CustServ.Calls, data= n.churn.training)
+plot(my.model)
+text(my.model,pretty=0)
+
+
+cv.tree =cv.tree(my.model, FUN=prune.misclass)
+plot(cv.tree$size, cv.tree$dev, type="b")
+pruned.model = prune.misclass(my.model, best=3)
+```
+

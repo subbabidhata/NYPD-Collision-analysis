@@ -1,0 +1,158 @@
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+```
+
+
+```{r}
+library("gestation")
+library("weight")
+library("smoke")
+library("bwt")
+library("age")
+library("height")
+```
+```{r}
+ data_babies_ <- read_csv("~/Documents/data_babies .csv")
+```
+
+```{r}
+data_babies_ <- read.csv ("data_babies_.csv")
+```
+#1 (15pts) The Child Health and Development Studies investigate a range of topics. One study considered all pregnancies between 1960 and 1967 among women in the Kaiser Foundation Health Plan in the San Francisco East Bay area. data_babies introduces a data set on birth weight of babies. Another variable we consider is gestation, length of pregnancy in days. Is gestation a good predictor of birth weight of babies?
+
+```{r}
+##1.a.Study the relationship visually and with linear regression analysis.
+
+cor(data_babies_$gestation , data_babies_$bwt)
+
+```
+
+```{r}
+##1 b.Intrepreting the regression analysis results.
+plot(data_babies_$gestation~data_babies_$bwt)
+m1 < lm(gestation ~ bwt data=data_babies_)
+m1
+summary(m1)
+y= 0.35830 * data_babies_$gestation +236.477
+y
+abline(m1)
+cov(data_babies$gestation , data_babies$bwt)
+#There is no linear regression in this scatterplot.
+```
+
+#2(15pts) The babies data also include information about mothers’ smoking habits. The variable smoke is coded 1 if the mother is a smoker, and 0 if not.
+
+2.) The babies data also include information about mothers’ smoking habits. The variable smoke is coded 1
+if the mother is a smoker, and 0 if not.
+
+```{r}
+plot(x= data_babies_$bwt , y=data_babies_$smoke)
+m2<- lm(data_babies_$bwt ~ data_babies_$smoke)
+m2
+summary(m2)
+smokewomen= 123.047 * data_babies_$bwt
+smokewomen
+cor(data_babies_$bwt ~ data_babies_$smoke, data=data_babies_)
+abline(m2)
+##Scatterplot can be used to show the relationship between gestation and birthweight
+```
+
+#3 (20pts) We considered the variables smoke and gestation, one at a time, in modeling birth weights of babies in Question 1 and 2. A more realistic approach to modeling infant weights is to consider all possibly related variables at once. Other variables of whether the child was 1st born (parity),0 if the child is the first born, and 1 otherwise; mother’s age in years (age); mother’s height in inches (height); and mother’s pregnancy weight in pounds (weight).
+
+```{r}
+my_lm=lm(parity ~ bwt, data=data_babies_)
+my_lm
+summary(my_lm)
+my_lm2=lm(age ~ height + weight, data=data_babies_)
+my_lm2
+summary(my_lm2)
+```
+
+## 5 (20pts) churn.csv is provides historical information about randomly selected 3333 customers for a phone service provider. Among other things, the churn variable shows whether the customer stop subscribing to the server (yes= he/she stopoed). Using knn, develop a model that predicts the churn variable using (at least)4 other variables in the dataset.
+
+```{r}
+churn <-read.csv("churn.csv")
+
+churn <- read.csv("~/Documents/churn .csv")
+```
+```{r}
+ churn <- read.csv("~/Documents/churn .csv")
+```
+
+```{r}
+head(churn)
+data(churn)
+require(ggplot2)
+library(ggplot2)
+data=churn
+ggplot(data) + geom_point(aes(x = Sepal.Length, y = Sepal.Width,color = Species)) + theme_light()
+require('class')
+summary(churn)
+summary(iris) 
+n.churn <- data.frame(sapply(churn[1:4], function(x) {(x - min(x))/(max(x) - min(x))}))
+head(n.iris)
+set.seed(1234)
+ind<- churn()
+```
+
+```{r}
+n.iris <- data.frame(sapply(iris[1:4], function(x) 
+(x - min(x))/(max(x) - min(x))
+head(n.iris)
+```
+```{r}
+iris_pred <- knn(train = iris.training, test = iris.test, cl = iris.trainLabels,
+k = 3)
+iris_pred <- knn(train = iris.training, test = iris.test, cl = iris.trainLabels,
+k = 2)
+```
+```{r}
+n.iris = sapply(churn[1:4], function(x) {
+(x - min(x))/(max(x) - min(x))
+})
+n.iris = data.frame(n.iris,churn_$left)
+head(n.iris)
+```
+
+
+```{r}
+smokyph<-read.csv("smokyph.csv")
+```
+#4 (20pts) Load data set smokyph.csv . This data set measures pH levels for water samples in the Great Smoky Mountains. There are claims that water ph level is not acceptable in this region (we expect average ph to be 7). Use the waterph column (waterph) to test if the water ph level is not acceptable ( within 95% confidence level).
+
+```{r}
+summary(smokyph)
+head(smokyph)
+hist(smokyph$waterph,)
+
+```
+#6 (20pts) For the same dataset create a decision tree again using 4 variables. (At least 2 of the variables in this model should be different than the ones you used in the 5th question)
+
+```{r}
+summary(churn)
+n.function<- function(x){  (x-min(x))/(max(x)- min(x))}
+set.seed(9850)
+head(churn$Area.Code)
+n.area<-n.function(churn$Area.code)
+head(data.frame(churn$Area.Code,n.area))
+n.churn<-sapply(churn[17:20],n.function)
+n.churn<-data.frame(n.churn, churn$Churn.)
+set.seed(234)
+ind=sample(2,nrow(n.churn),replace=T, prob=c(0.67,.33))
+n.churn.training = n.churn[ind==1,]
+n.churn.test = n.churn[ind==2,]
+install.packages('tree')
+require('tree')
+my.model<-tree(churn.Churn.~Intl.Mins + Intl.Calls +Intl.Charge + CustServ.Calls, data= n.churn.training)
+plot(my.model)
+text(my.model,pretty=0)
+cv.tree =cv.tree(my.model, FUN=prune.misclass)
+plot(cv.tree$size, cv.tree$dev, type="b")
+pruned.model = prune.misclass(my.model, best=3)
+```
+

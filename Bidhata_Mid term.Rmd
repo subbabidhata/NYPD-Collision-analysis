@@ -1,0 +1,111 @@
+---
+title: "BS"
+author: "BS"
+date: "October 9, 2016"
+output: pdf_document
+---
+
+a. For each of the following commands, either explain why they should be errors, or explain the
+non-erroneous result.
+vector1 <- c("5", "12", "7", "32")
+max(vector1)
+sort(vector1)
+sum(vector1)
+
+Ans)
+Character quantities and character vectors are used frequently in R, for example as plot labels. Where needed they are denoted by a sequence of characters delimited by the double quote character, e.g., "x-values"
+
+```{r}
+
+vector1 <- c(5,12,7,32)
+max(vector1)
+sort(vector1)
+sum(vector1)
+
+```
+2)For the next series of commands, either explain their results, or why they should produce errors.
+Ans)
+```{r}
+vector1 <- c(5, 12, 7, 32)
+vector2 <- c(5,7,12)
+vector2[2] + vector2[3]
+```
+
+```{r}
+dataframe3 <- data.frame(z1=5,z2=7,z3=12)
+dataframe3[1,2] + dataframe3[1,3]
+```
+
+```{r}
+list4 <- list(z1="6", z2=42, z3="49", z4=126)
+list4[[2]]+list4[[4]]
+```
+
+2)mtcars, another dataset under the datasets library in R, was extracted from the 1974 Motor Trend
+US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for
+32 automobiles (1973-74 models). Note: Although both are about cars, mtcars is a di!erent dataset
+than the mpg dataset we worked with in the class.
+a. What is the type of mtcars? Also is it a data frame? 
+Ans- Its a "list" type of dataset. YES, mtcars is a data frame.
+b. How many rows and columns does mtcars have?
+```{r}
+nrow(mtcars)
+data(mtcars)
+ncol(mtcars)
+```
+c. What are the names of the columns of mtcars?
+```{r}
+require(graphics)
+pairs(mtcars, main = "mtcars data")
+coplot(mpg ~ disp | as.factor(cyl), data = mtcars, panel = panel.smooth, rows = 1)
+```
+d. What is the value of row 5, column 7 of mtcars? What does the value signify ?
+ans)
+The column 7 in the dataset mtcars is "qsec" and the row 5 is "Hornet Sportabout". The value is the result of matrix matcars.
+```{r}
+mtcars[5,7]
+```
+e. Display the second row of mtcars in its entirety.
+```{r}
+mtcars[2,]
+```
+f. Explain what this command does by running it on your data and examining the object.
+```{r}
+mydata<- mtcars
+names(mydata) <- c("mileage","cylinder",seq(0,8))
+names(mydata)                   
+```
+g.  
+h.
+```{r}
+mtcars <- within(mtcars, {disp_l <- disp*0.0163871})
+mtcars <- within(mtcars,{hp_l <- hp/disp_l})
+rownames(mtcars) [which.max(mtcars[,13])]
+```
+
+3.
+```{r}
+seq(0,10000,by=372)
+seq(0,10000,length.out = 50)
+rep(1:3, times=3)
+rep(1:3, each=3)
+```
+
+Part II - Descriptive Stats
+
+TRUE !! My instructor likes cars a lot.
+```{r}
+library(MASS)
+data("Cars93")
+View(Cars93)
+summary(Cars93)
+nrow(Cars93)
+Rear_T = subset(Cars93, DriveTrain=='Rear')
+mean(Rear_T[,5])
+median(Rear_T[,5])
+sd(Rear_T[,5])
+Seven.seater = subset(Cars93, Passengers =="7")
+min(Seven.seater [,13])
+Atleastsix.seater = subset(Cars93, Passengers >="6")
+min(Atleastsix.seater[,13])
+```

@@ -1,0 +1,54 @@
+---
+title: "Bidhata subba"
+author: "BS"
+date: "November 27, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+load("more/baseball.RData")-----------------------------------------------------------------------
+  View(baseball)
+1. Scatterplot can be utilized to show the relationship amongst runs and other numerical variable. The group's at_bats can be utilized as a part of a straight model to anticipate the quantity of runs given that we could see some direct pattern in relationship. In any case, the relationship is not sufficiently solid, so the forecast may not be of wanted precision.
+2.in the event that the relationship looks straight, we can evaluate the quality of the association with the connection coefficient.
+cor(baseball$runs, baseball$at_bats)
+3.m1<-lm(runs ~ at_bats, data = baseball)
+The principal contention in the capacity lm is an equation that takes the shape y ~ x. Here it can be perused that we need to make a straight model of keeps running as a component of at_ bats.The second contention determines that R ought to look in the baseball information casing to discover the runs and at_bats factors. 
+
+The yield of lm is a question that contains the majority of the data we require about the direct model that was simply fit. We can get to this data utilizing the rundown work.
+summary(m1)
+The R2 esteem speaks to the extent of changeability in the reaction variable that is clarified by the illustrative variable. For this model, 37.3% of the inconstancy in runs is clarified by at-bats.
+runs = 415.239+1.835*homerun 
+The slope is positive. For every unit of increase in homerun, the run increases by 1.835
+ 4. plot(baseball$ runs  ~  baseball$ at_bats )
+abline(m1)
+At the point when expectations are made for estimations of x that are past the scope of the watched information, it is alluded to as extrapolation and is not generally suggested. Be that as it may, expectations made inside the scope of the information are more solid. They're additionally used to figure the residuals.
+5. In light of the relapse line the manager would foresee around 727 runs. Given, that we don't have a group with at_bats of 5578 in our information it is hard to state if this is overestimate or think little of. However, in the event that we consider 5579 as an estimation then the keeps running for group with at-bats 5579 is 713. So the administrator overestimated the keeps running by around 14.
+plot(m1$residuals ~ baseball$at_bats)
+abline(h = 0, lty = 3)  
+There is no trend in residual plots. This shows the relationship is linear
+6.I choose to check bat_avg. 
+There seems to be a linear relationship between runs and bats_avg
+plot(baseball$bat_avg,baseball$runs,xlab="bat _avg",ylab="runs",main="Batting Avg Vs runs")
+7. the relationship amongst runs and bat_ avg is by all accounts more grounded than that of runs and at_ bats. The R2 esteem for model utilizing at_ bats is 0.3729 while for model utilizing bat _ avg is 0.6561. Given the higher R2, we could state the model utilizing bat_ avg is better indicator of runs. The whole of residuals for the model utilizing at_ bats is 123721.9 and for the model utilizing bat_ avg is 67849.52. This demonstrates the model utilizing bat_ avg predicts runs superior to the model utilizing at_bats variable.
